@@ -79,6 +79,7 @@
             cargo-machete
             pkgs.protobuf
             pkgs.ntfy-sh
+            pkgs.chromium
           ];
 
           inputsFrom = [ ];
