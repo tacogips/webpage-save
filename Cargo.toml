@@ -1,0 +1,88 @@
+[package]
+name = "webpage-save"
+version = "0.1.0"
+edition = "2024"
+description = "URL to PDF conversion tool using headless Chrome"
+authors = ["me+github@tacogips.me"]
+license = "MIT"
+repository = "https://github.com/tacogips/webpage-save"
+
+
+[dependencies]
+# Async runtime
+tokio = { version = "1", features = [
+    "rt-multi-thread",
+    "fs",
+    "time",
+    "macros",
+] }
+
+# Logging and tracing
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# Utilities
+anyhow = "1.0"
+clap = { version = "4.4", features = ["derive"] }
+url = "2.5"
+tempfile = "3.8"
+
+# PDF generation using headless Chrome
+headless_chrome = "1.0"
+
+# Brave Search functionality
+bravesearch-mcp = { git = "https://github.com/tacogips/bravesearch-mcp", branch = "main" }
+reqwest = { version = "0.11", features = ["gzip", "json"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Text processing
+regex = "1.10"
+
+# Markdown generation
+mdka = "1.5"
+select = "0.6"
+
+[dev-dependencies]
+# Testing utilities
+tempfile = "3.8"
+tokio-test = "0.4"
+
+[profile.dev]
+opt-level = 1      # Some optimization for faster linking
+debug = 1          # Reduced debug info
+incremental = true # Faster rebuilds
+
+[profile.dev.build-override]
+opt-level = 3 # Optimize build scripts
+
+[features]
+default = []
+# Features used for testing
+this_test_is_disabled = []
+
+# cargo-dist configuration
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml SemVer syntax)
+cargo-dist-version = "0.22.1"
+# CI backends to support
+ci = "github"
+# The installers to generate for each app
+installers = ["shell", "powershell"]
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = [
+    "aarch64-apple-darwin",
+    "x86_64-apple-darwin",
+    "x86_64-unknown-linux-gnu",
+    "x86_64-pc-windows-msvc",
+]
+# Path that installers should place binaries in
+install-path = "CARGO_HOME"
+# Whether to install an updater program
+install-updater = false
+
+
+# URL to PDF converter binary
+[[bin]]
+name = "webpage-save"
+path = "src/bin/url_to_pdf.rs"
